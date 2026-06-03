@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>한국어 단어 퀴즈 — 4A 4-1 날씨와 기후</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --card: #1a1d27;
+    --card2: #22263a;
+    --accent: #7c6fff;
+    --accent2: #ff6b9d;
+    --accent3: #43e8b0;
+    --accent4: #ffd166;
+    --text: #f0f0f8;
+    --sub: #8888aa;
+    --btn-h: 56px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Nunito', 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px 48px;
+  }
+  .lang-screen {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10,11,18,0.97);
+    z-index: 200;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .lang-screen.show { display: flex; }
+  .lang-screen h2 { font-size: 26px; font-weight: 900; color: var(--text); margin-bottom: 4px; letter-spacing: -0.5px; }
+  .lang-screen p  { color: var(--sub); font-size: 14px; margin-bottom: 8px; }
+  .lang-grid { display: flex; flex-direction: column; gap: 12px; width: 300px; }
+  .pick-btn {
+    display: flex; align-items: center; gap: 14px;
+    padding: 16px 22px;
+    background: var(--card2);
+    border: 2px solid transparent;
+    border-radius: 16px;
+    cursor: pointer;
+    font-family: inherit; font-size: 17px; font-weight: 700; color: var(--text);
+    transition: all 0.18s;
+  }
+  .pick-btn .flag { font-size: 26px; }
+  .pick-btn:hover { border-color: var(--accent); background: rgba(124,111,255,0.14); }
+  .header { width: 100%; max-width: 560px; text-align: center; margin-bottom: 18px; }
+  .header h1 { font-size: 21px; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 3px; }
+  .header p  { font-size: 13px; color: var(--sub); margin-bottom: 16px; }
+  .lang-tabs { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .lang-tab {
+    display: flex; align-items: center; gap: 6px;
+    padding: 9px 18px;
+    border-radius: 50px;
+    border: 2px solid transparent;
+    background: var(--card2);
+    color: var(--sub);
+    font-family: inherit; font-size: 14px; font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .lang-tab .flag { font-size: 18px; }
+  .lang-tab:hover { border-color: var(--accent); color: var(--text); }
+  .lang-tab.active-en { border-color: #7c6fff; background: rgba(124,111,255,0.15); color: #a99fff; }
+  .lang-tab.active-zh { border-color: #ffd166; background: rgba(255,209,102,0.15); color: #ffd166; }
+  .lang-tab.active-vi { border-color: #43e8b0; background: rgba(67,232,176,0.15);  color: #43e8b0; }
+  .lang-tab.active-mn { border-color: #ce93d8; background: rgba(206,147,216,0.15); color: #ce93d8; }
+  .lang-tab.reverse-en { border-color: #7c6fff; background: rgba(124,111,255,0.32); color: #a99fff; box-shadow: 0 0 0 2px rgba(124,111,255,0.35) inset; }
+  .lang-tab.reverse-zh { border-color: #ffd166; background: rgba(255,209,102,0.32); color: #ffd166; box-shadow: 0 0 0 2px rgba(255,209,102,0.35) inset; }
+  .lang-tab.reverse-vi { border-color: #43e8b0; background: rgba(67,232,176,0.32);  color: #43e8b0; box-shadow: 0 0 0 2px rgba(67,232,176,0.35) inset; }
+  .lang-tab.reverse-mn { border-color: #ce93d8; background: rgba(206,147,216,0.32); color: #ce93d8; box-shadow: 0 0 0 2px rgba(206,147,216,0.35) inset; }
+  .reverse-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 900;
+    background: rgba(255,255,255,0.18);
+    border-radius: 6px;
+    padding: 1px 5px;
+    margin-left: 2px;
+    letter-spacing: 0;
+    vertical-align: middle;
+  }
+  .q-direction {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--sub);
+    text-align: center;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .quiz-card { width: 100%; max-width: 560px; background: var(--card); border-radius: 24px; padding: 26px 26px 22px; box-shadow: 0 8px 48px rgba(0,0,0,0.55); }
+  .stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .stat-box { background: var(--card2); border-radius: 14px; padding: 12px 10px; text-align: center; }
+  .stat-box .lbl { font-size: 11px; color: var(--sub); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .stat-box .val { font-size: 26px; font-weight: 900; }
+  #score-val { color: var(--accent4); }
+  #combo-val { color: var(--accent3); }
+  #wrong-val { color: var(--accent2); }
+  .round-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; opacity: 0; transition: opacity 0.3s; }
+  .round-row.visible { opacity: 1; }
+  .round-lbl { font-size: 12px; font-weight: 700; color: var(--sub); white-space: nowrap; min-width: 60px; }
+  .rbar { flex: 1; height: 8px; background: var(--card2); border-radius: 99px; overflow: hidden; }
+  .rbar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 99px; transition: width 0.4s; }
+  .round-cnt { font-size: 12px; font-weight: 700; color: var(--sub); white-space: nowrap; min-width: 40px; text-align: right; }
+  .timer-bar { height: 6px; background: var(--card2); border-radius: 99px; overflow: hidden; margin-bottom: 18px; }
+  .timer-fill { height: 100%; width: 100%; background: var(--accent3); border-radius: 99px; transition: width 0.1s linear; }
+  .timer-fill.danger { background: var(--accent2); }
+  .q-word { font-size: 32px; font-weight: 900; text-align: center; margin-bottom: 22px; letter-spacing: -0.5px; line-height: 1.2; }
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .opt-btn {
+    min-height: var(--btn-h);
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 2px solid var(--card2);
+    background: var(--card2);
+    color: var(--text);
+    font-family: inherit; font-size: 14px; font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    line-height: 1.3;
+    word-break: keep-all;
+  }
+  .opt-btn:hover:not(:disabled) { border-color: var(--accent); background: rgba(124,111,255,0.12); }
+  .opt-btn.correct { border-color: var(--accent3); background: rgba(67,232,176,0.18); color: var(--accent3); }
+  .opt-btn.wrong   { border-color: var(--accent2); background: rgba(255,107,157,0.15); color: var(--accent2); }
+  .opt-btn:disabled { opacity: 0.7; cursor: default; }
+  .feedback { min-height: 24px; font-size: 14px; font-weight: 700; text-align: center; border-radius: 10px; padding: 6px 12px; transition: all 0.2s; }
+  .feedback.ok    { color: var(--accent3); background: rgba(67,232,176,0.1); }
+  .feedback.bad   { color: var(--accent2); background: rgba(255,107,157,0.1); }
+  .feedback.combo { color: var(--accent4); background: rgba(255,209,102,0.12); }
+  .cel-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(10,11,18,0.92); z-index: 300;
+    justify-content: center; align-items: center; flex-direction: column; gap: 14px;
+  }
+  .cel-overlay.show { display: flex; }
+  .cel-box { background: var(--card); border-radius: 28px; padding: 36px 40px; text-align: center; max-width: 360px; box-shadow: 0 12px 60px rgba(0,0,0,0.7); }
+  .cel-emoji { font-size: 56px; margin-bottom: 10px; }
+  .cel-title { font-size: 28px; font-weight: 900; color: var(--accent4); margin-bottom: 8px; }
+  .cel-msg   { font-size: 15px; color: var(--sub); margin-bottom: 22px; line-height: 1.5; }
+  .cel-btn {
+    padding: 14px 36px; border-radius: 50px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none; color: #fff; font-family: inherit; font-size: 16px; font-weight: 900;
+    cursor: pointer; transition: opacity 0.2s;
+  }
+  .cel-btn:hover { opacity: 0.88; }
+</style>
+</head>
+<body>
+
+<!-- 언어 선택 오버레이 -->
+<div class="lang-screen show" id="lang-screen">
+  <h2>🌤️ 단어 퀴즈</h2>
+  <p>학습할 언어를 선택하세요</p>
+  <div class="lang-grid">
+    <button class="pick-btn" onclick="pickLang('en')"><span class="flag">🇺🇸</span> English</button>
+    <button class="pick-btn" onclick="pickLang('zh')"><span class="flag">🇨🇳</span> 中文</button>
+    <button class="pick-btn" onclick="pickLang('vi')"><span class="flag">🇻🇳</span> Tiếng Việt</button>
+    <button class="pick-btn" onclick="pickLang('mn')"><span class="flag">🇲🇳</span> Монгол</button>
+  </div>
+</div>
+
+<!-- 마일스톤 오버레이 -->
+<div class="cel-overlay" id="cel-overlay">
+  <div class="cel-box">
+    <div class="cel-emoji">🎉</div>
+    <div class="cel-title" id="cel-title"></div>
+    <div class="cel-msg"   id="cel-msg"></div>
+    <button class="cel-btn" onclick="closeCelebration()">계속하기 →</button>
+  </div>
+</div>
+
+<!-- 헤더 -->
+<div class="header">
+  <h1>🌤️ 4A 4-1 날씨와 기후</h1>
+  <p>4A 4-1 날씨와 기후 · 학습 언어를 골라 퀴즈를 시작하세요</p>
+  <div class="lang-tabs">
+    <button class="lang-tab" id="tab-en" onclick="switchLang('en')"><span class="flag">🇺🇸</span> EN</button>
+    <button class="lang-tab" id="tab-zh" onclick="switchLang('zh')"><span class="flag">🇨🇳</span> 中文</button>
+    <button class="lang-tab" id="tab-vi" onclick="switchLang('vi')"><span class="flag">🇻🇳</span> VI</button>
+    <button class="lang-tab" id="tab-mn" onclick="switchLang('mn')"><span class="flag">🇲🇳</span> МН</button>
+  </div>
+</div>
+
+<!-- 퀴즈 카드 -->
+<div class="quiz-card" id="quiz-card" style="display:none;">
+  <div class="stats">
+    <div class="stat-box"><div class="lbl">점수</div><div class="val" id="score-val">0</div></div>
+    <div class="stat-box"><div class="lbl">콤보</div><div class="val" id="combo-val">0</div></div>
+    <div class="stat-box"><div class="lbl">연속오답</div><div class="val" id="wrong-val">0</div></div>
+  </div>
+
+  <div class="round-row" id="round-row">
+    <span class="round-lbl" id="round-lbl">라운드 1</span>
+    <div class="rbar"><div class="rbar-fill" id="rbar-fill" style="width:0%"></div></div>
+    <span class="round-cnt" id="round-cnt">0/0</span>
+  </div>
+
+  <div class="timer-bar"><div class="timer-fill" id="timer-fill"></div></div>
+
+  <div class="q-direction" id="q-direction"></div>
+  <div class="q-word" id="q-word">—</div>
+  <div class="options" id="options"></div>
+  <div class="feedback" id="feedback"></div>
+</div>
+
+<script>
+let wordData = [];
+let currentLang = 'en';
+let isReverse = false;   // false = KO→외국어, true = 외국어→KO
+let currentQ = null;
+let score = 0, combo = 0, wrongStreak = 0;
+let timerInt = null, timeLeft = 50, penaltyDone = false;
+let isPaused = false;
+let shuffleQueue = [], roundCount = 1;
+let milestones = { 10:false, 30:false, 50:false, 100:false, 200:false, 300:false };
+
+const MILESTONE_MSGS = {
+  10:  { title: "🔥 10점 달성!", msg: (p) => `훌륭해요! 계속 이 기세로 가세요!` },
+  30:  { title: "⚡ 30점 돌파!", msg: (p) => `완벽한 흐름이에요. 멈추지 마세요!` },
+  50:  { title: "🌟 50점 달성!", msg: (p) => `대단해요! 절반 목표 달성!` },
+  100: { title: "💯 100점!", msg: (p) => `세 자리 숫자! 진짜 실력자네요!` },
+  200: { title: "🚀 200점!", msg: (p) => `놀라운 집중력이에요!` },
+  300: { title: "👑 300점 전설!", msg: (p) => `완벽한 마스터입니다!` },
+};
+
+const LANG_LABELS = { en: 'English', zh: '中文', vi: 'Tiếng Việt', mn: 'Монгол' };
+
+function dataCallback(data) { wordData = data; }
+
+function buildQueue(pool) {
+  const q = [...pool];
+  for (let i = q.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [q[i], q[j]] = [q[j], q[i]];
+  }
+  return q;
+}
+
+function popNextWord(pool) {
+  if (shuffleQueue.length === 0) { roundCount++; shuffleQueue = buildQueue(pool); }
+  return shuffleQueue.pop();
+}
+
+function updateRoundBar(total) {
+  const row = document.getElementById('round-row');
+  row.classList.add('visible');
+  const done = total - shuffleQueue.length;
+  document.getElementById('round-lbl').textContent = `라운드 ${roundCount}`;
+  document.getElementById('rbar-fill').style.width = Math.round((done / total) * 100) + '%';
+  document.getElementById('round-cnt').textContent = `${done}/${total}`;
+}
+
+function pickLang(lang) {
+  document.getElementById('lang-screen').classList.remove('show');
+  isReverse = false;
+  startWithLang(lang);
+}
+
+function switchLang(lang) {
+  clearInterval(timerInt);
+  if (currentLang === lang) {
+    isReverse = !isReverse;
+  } else {
+    isReverse = false;
+  }
+  startWithLang(lang);
+}
+
+function updateTabUI() {
+  document.querySelectorAll('.lang-tab').forEach(b => {
+    // badge 제거
+    const old = b.querySelector('.reverse-badge');
+    if (old) old.remove();
+    b.className = 'lang-tab';
+  });
+  const tab = document.getElementById('tab-' + currentLang);
+  tab.classList.add(isReverse ? 'reverse-' + currentLang : 'active-' + currentLang);
+  if (isReverse) {
+    const badge = document.createElement('span');
+    badge.className = 'reverse-badge';
+    badge.textContent = '⇄';
+    tab.appendChild(badge);
+  }
+}
+
+function startWithLang(lang) {
+  currentLang = lang;
+  updateTabUI();
+  document.getElementById('quiz-card').style.display = 'block';
+  score = 0; combo = 0; wrongStreak = 0;
+  milestones = { 10:false, 30:false, 50:false, 100:false, 200:false, 300:false };
+  const pool = wordData.filter(w => w[lang]);
+  shuffleQueue = buildQueue(pool);
+  roundCount = 1;
+  updateStats();
+  nextQ();
+}
+
+function updateStats() {
+  document.getElementById('score-val').textContent = score;
+  document.getElementById('combo-val').textContent = combo;
+  document.getElementById('wrong-val').textContent = wrongStreak;
+}
+
+function nextQ() {
+  if (isPaused) return;
+  clearInterval(timerInt);
+  penaltyDone = false;
+  timeLeft = 50;
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback';
+  fb.textContent = '';
+  const pool = wordData.filter(w => w[currentLang]);
+  currentQ = popNextWord(pool);
+  updateRoundBar(pool.length);
+
+  // 방향 레이블
+  const dirEl = document.getElementById('q-direction');
+  dirEl.textContent = isReverse
+    ? `${LANG_LABELS[currentLang]} → 한국어`
+    : `한국어 → ${LANG_LABELS[currentLang]}`;
+
+  let correct, getOpt;
+  if (isReverse) {
+    document.getElementById('q-word').textContent = currentQ[currentLang];
+    correct = currentQ.ko;
+    getOpt = (w) => w.ko;
+  } else {
+    document.getElementById('q-word').textContent = currentQ.ko;
+    correct = currentQ[currentLang];
+    getOpt = (w) => w[currentLang];
+  }
+
+  const opts = [correct];
+  while (opts.length < 4) {
+    const rand = getOpt(pool[Math.floor(Math.random() * pool.length)]);
+    if (!opts.includes(rand)) opts.push(rand);
+  }
+  opts.sort(() => Math.random() - 0.5);
+  const container = document.getElementById('options');
+  container.innerHTML = '';
+  opts.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.textContent = opt;
+    btn.addEventListener('click', () => checkAnswer(opt, btn, correct));
+    container.appendChild(btn);
+  });
+  startTimer();
+}
+
+function startTimer() {
+  const fill = document.getElementById('timer-fill');
+  fill.style.width = '100%';
+  fill.classList.remove('danger');
+  timerInt = setInterval(() => {
+    if (isPaused) return;
+    timeLeft--;
+    fill.style.width = (timeLeft / 50 * 100) + '%';
+    if (timeLeft < 20) fill.classList.add('danger');
+    if (timeLeft < 20 && !penaltyDone) {
+      penaltyDone = true;
+      score = Math.max(0, score - 1);
+      updateStats();
+      showFeedback('⏱️ 3초 경과! (-1점)', 'bad');
+    }
+    if (timeLeft <= 0) { clearInterval(timerInt); onTimeout(); }
+  }, 100);
+}
+
+function onTimeout() {
+  combo = 0; wrongStreak++;
+  if (wrongStreak % 2 === 0 && wrongStreak > 0) {
+    score = Math.max(0, score - 1);
+    showFeedback('🚨 시간 초과 + 연속 오답 감점! (-1점)', 'bad');
+  } else {
+    showFeedback('⏰ 시간 초과! 다음 문제로 넘어갑니다.', 'bad');
+  }
+  updateStats(); disableOpts();
+  setTimeout(nextQ, 1300);
+}
+
+function checkAnswer(selected, btn, correct) {
+  if (isPaused) return;
+  clearInterval(timerInt); disableOpts();
+  const allBtns = document.querySelectorAll('.opt-btn');
+  if (selected === correct) {
+    btn.classList.add('correct');
+    wrongStreak = 0; combo++;
+    let added = 1;
+    if (combo === 2)     { added = 3; showFeedback('🎉 2연속 콤보! (+3점)', 'combo'); }
+    else if (combo >= 3) { added = 5; showFeedback(`🔥 ${combo}연속 콤보 대박! (+5점)`, 'combo'); }
+    else                 { showFeedback('정답입니다! 👍 (+1점)', 'ok'); }
+    score += added; updateStats();
+    if (checkMilestone()) return;
+  } else {
+    btn.classList.add('wrong');
+    allBtns.forEach(b => { if (b.textContent === correct) b.classList.add('correct'); });
+    combo = 0; wrongStreak++;
+    if (wrongStreak >= 2 && wrongStreak % 2 === 0) {
+      score = Math.max(0, score - 1);
+      showFeedback(`틀렸습니다! 연속 오답 감점 💀 (-1점)  정답: ${correct}`, 'bad');
+    } else {
+      showFeedback(`틀렸습니다! ❌  정답: ${correct}`, 'bad');
+    }
+    updateStats();
+  }
+  setTimeout(nextQ, 1600);
+}
+
+function disableOpts() { document.querySelectorAll('.opt-btn').forEach(b => b.disabled = true); }
+
+function showFeedback(msg, cls) {
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback ' + cls;
+  fb.textContent = msg;
+}
+
+function checkMilestone() {
+  for (const t of [10, 30, 50, 100, 200, 300]) {
+    if (score >= t && !milestones[t]) {
+      milestones[t] = true; triggerCelebration(t); return true;
+    }
+  }
+  return false;
+}
+
+function triggerCelebration(pts) {
+  isPaused = true; clearInterval(timerInt); playFanfare();
+  const m = MILESTONE_MSGS[pts];
+  document.getElementById('cel-title').textContent = m.title;
+  document.getElementById('cel-msg').textContent   = m.msg(pts);
+  document.getElementById('cel-overlay').classList.add('show');
+}
+
+function closeCelebration() {
+  document.getElementById('cel-overlay').classList.remove('show');
+  isPaused = false; nextQ();
+}
+
+function playFanfare() {
+  const AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC) return;
+  const ctx = new AC();
+  const notes = [261.63, 329.63, 392.00, 523.25];
+  const now = ctx.currentTime;
+  notes.forEach((freq, i) => {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(freq, now + i * 0.12);
+    gain.gain.setValueAtTime(0.2, now + i * 0.12);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + i * 0.12 + 0.6);
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(now + i * 0.12); osc.stop(now + i * 0.12 + 0.6);
+  });
+}
+</script>
+
+<script src="words.js"></script>
+</body>
+</html>
