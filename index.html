@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>한국어 단어 퀴즈 — 4A 4-1 날씨와 기후</title>
+<title>한국어 단어 퀴즈 — 4A 4과 기후와 문화</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -77,183 +77,183 @@
   .lang-tab.active-zh { border-color: #ffd166; background: rgba(255,209,102,0.15); color: #ffd166; }
   .lang-tab.active-vi { border-color: #43e8b0; background: rgba(67,232,176,0.15);  color: #43e8b0; }
   .lang-tab.active-mn { border-color: #ce93d8; background: rgba(206,147,216,0.15); color: #ce93d8; }
+  .lang-tab.active-ru { border-color: #ff8a65; background: rgba(255,138,101,0.15); color: #ff8a65; }
   .lang-tab.reverse-en { border-color: #7c6fff; background: rgba(124,111,255,0.32); color: #a99fff; box-shadow: 0 0 0 2px rgba(124,111,255,0.35) inset; }
   .lang-tab.reverse-zh { border-color: #ffd166; background: rgba(255,209,102,0.32); color: #ffd166; box-shadow: 0 0 0 2px rgba(255,209,102,0.35) inset; }
   .lang-tab.reverse-vi { border-color: #43e8b0; background: rgba(67,232,176,0.32);  color: #43e8b0; box-shadow: 0 0 0 2px rgba(67,232,176,0.35) inset; }
   .lang-tab.reverse-mn { border-color: #ce93d8; background: rgba(206,147,216,0.32); color: #ce93d8; box-shadow: 0 0 0 2px rgba(206,147,216,0.35) inset; }
+  .lang-tab.reverse-ru { border-color: #ff8a65; background: rgba(255,138,101,0.32); color: #ff8a65; box-shadow: 0 0 0 2px rgba(255,138,101,0.35) inset; }
   .reverse-badge {
     display: inline-block;
-    font-size: 10px;
-    font-weight: 900;
+    font-size: 10px; font-weight: 900;
     background: rgba(255,255,255,0.18);
     border-radius: 6px;
-    padding: 1px 5px;
-    margin-left: 2px;
-    letter-spacing: 0;
+    padding: 1px 5px; margin-left: 2px;
     vertical-align: middle;
   }
   .q-direction {
-    font-size: 11px;
-    font-weight: 700;
+    font-size: 11px; font-weight: 700;
     color: var(--sub);
     text-align: center;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
     letter-spacing: 0.5px;
     text-transform: uppercase;
   }
   .quiz-card { width: 100%; max-width: 560px; background: var(--card); border-radius: 24px; padding: 26px 26px 22px; box-shadow: 0 8px 48px rgba(0,0,0,0.55); }
   .stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-  .stat-box { background: var(--card2); border-radius: 14px; padding: 12px 10px; text-align: center; }
-  .stat-box .lbl { font-size: 11px; color: var(--sub); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
-  .stat-box .val { font-size: 26px; font-weight: 900; }
+  .stat-box { background: var(--card2); border-radius: 12px; padding: 10px 10px 9px; text-align: center; }
+  .stat-box .lbl { font-size: 11px; color: var(--sub); font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 3px; }
+  .stat-box .val { font-size: 22px; font-weight: 900; line-height: 1; }
   #score-val { color: var(--accent4); }
-  #combo-val { color: var(--accent3); }
-  #wrong-val { color: var(--accent2); }
-  .round-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; opacity: 0; transition: opacity 0.3s; }
-  .round-row.visible { opacity: 1; }
-  .round-lbl { font-size: 12px; font-weight: 700; color: var(--sub); white-space: nowrap; min-width: 60px; }
-  .rbar { flex: 1; height: 8px; background: var(--card2); border-radius: 99px; overflow: hidden; }
-  .rbar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 99px; transition: width 0.4s; }
-  .round-cnt { font-size: 12px; font-weight: 700; color: var(--sub); white-space: nowrap; min-width: 40px; text-align: right; }
-  .timer-bar { height: 6px; background: var(--card2); border-radius: 99px; overflow: hidden; margin-bottom: 18px; }
-  .timer-fill { height: 100%; width: 100%; background: var(--accent3); border-radius: 99px; transition: width 0.1s linear; }
-  .timer-fill.danger { background: var(--accent2); }
-  .q-word { font-size: 32px; font-weight: 900; text-align: center; margin-bottom: 22px; letter-spacing: -0.5px; line-height: 1.2; }
-  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  #combo-val { color: var(--accent2); }
+  #wrong-val { color: #ff5757; }
+  .round-row { display: none; align-items: center; gap: 9px; margin-bottom: 12px; font-size: 12px; font-weight: 700; color: var(--sub); }
+  .round-row.visible { display: flex; }
+  .rbar-wrap { flex: 1; height: 5px; background: var(--card2); border-radius: 99px; overflow: hidden; }
+  .rbar-fill { height: 100%; background: linear-gradient(90deg, var(--accent3), var(--accent)); border-radius: 99px; transition: width 0.3s ease; width: 0%; }
+  #round-lbl { white-space: nowrap; color: var(--accent3); }
+  #round-cnt { white-space: nowrap; }
+  .timer-wrap { height: 6px; background: var(--card2); border-radius: 99px; overflow: hidden; margin-bottom: 22px; }
+  .timer-fill { height: 100%; width: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width 0.1s linear, background 0.5s; }
+  .timer-fill.danger { background: linear-gradient(90deg, #ff4d4d, #ff9900); }
+  .q-area { min-height: 76px; display: flex; align-items: center; justify-content: center; margin-bottom: 22px; }
+  .q-word { font-size: 30px; font-weight: 900; text-align: center; line-height: 1.25; letter-spacing: -0.5px; }
+  .options { display: flex; flex-direction: column; gap: 10px; }
   .opt-btn {
     min-height: var(--btn-h);
-    padding: 12px 14px;
-    border-radius: 14px;
+    border-radius: 12px;
     border: 2px solid var(--card2);
     background: var(--card2);
     color: var(--text);
-    font-family: inherit; font-size: 14px; font-weight: 700;
+    font-family: inherit; font-size: 15px; font-weight: 700;
     cursor: pointer;
     transition: all 0.15s;
-    line-height: 1.3;
-    word-break: keep-all;
+    padding: 10px 18px;
+    text-align: left;
+    line-height: 1.35;
+    word-break: break-word;
   }
-  .opt-btn:hover:not(:disabled) { border-color: var(--accent); background: rgba(124,111,255,0.12); }
-  .opt-btn.correct { border-color: var(--accent3); background: rgba(67,232,176,0.18); color: var(--accent3); }
-  .opt-btn.wrong   { border-color: var(--accent2); background: rgba(255,107,157,0.15); color: var(--accent2); }
-  .opt-btn:disabled { opacity: 0.7; cursor: default; }
-  .feedback { min-height: 24px; font-size: 14px; font-weight: 700; text-align: center; border-radius: 10px; padding: 6px 12px; transition: all 0.2s; }
-  .feedback.ok    { color: var(--accent3); background: rgba(67,232,176,0.1); }
-  .feedback.bad   { color: var(--accent2); background: rgba(255,107,157,0.1); }
-  .feedback.combo { color: var(--accent4); background: rgba(255,209,102,0.12); }
-  .cel-overlay {
-    display: none; position: fixed; inset: 0;
-    background: rgba(10,11,18,0.92); z-index: 300;
-    justify-content: center; align-items: center; flex-direction: column; gap: 14px;
-  }
+  .opt-btn:hover:not(:disabled) { border-color: var(--accent); background: rgba(124,111,255,0.1); }
+  .opt-btn.correct { border-color: var(--accent3); background: rgba(67,232,176,0.17); color: var(--accent3); animation: pulse-ok 0.3s ease; }
+  .opt-btn.wrong   { border-color: #ff5757; background: rgba(255,87,87,0.14); color: #ff5757; animation: shake 0.35s ease; }
+  .opt-btn:disabled { cursor: default; }
+  .feedback { min-height: 26px; margin-top: 15px; font-size: 15px; font-weight: 700; text-align: center; }
+  .feedback.ok    { color: var(--accent3); }
+  .feedback.bad   { color: #ff5757; }
+  .feedback.combo { color: var(--accent4); font-size: 17px; animation: bounce 0.4s alternate infinite; }
+  .cel-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.78); z-index: 300; justify-content: center; align-items: center; }
   .cel-overlay.show { display: flex; }
-  .cel-box { background: var(--card); border-radius: 28px; padding: 36px 40px; text-align: center; max-width: 360px; box-shadow: 0 12px 60px rgba(0,0,0,0.7); }
-  .cel-emoji { font-size: 56px; margin-bottom: 10px; }
-  .cel-title { font-size: 28px; font-weight: 900; color: var(--accent4); margin-bottom: 8px; }
-  .cel-msg   { font-size: 15px; color: var(--sub); margin-bottom: 22px; line-height: 1.5; }
-  .cel-btn {
-    padding: 14px 36px; border-radius: 50px;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    border: none; color: #fff; font-family: inherit; font-size: 16px; font-weight: 900;
-    cursor: pointer; transition: opacity 0.2s;
-  }
-  .cel-btn:hover { opacity: 0.88; }
+  .cel-box { background: var(--card); border: 2px solid var(--accent4); border-radius: 24px; padding: 44px 38px; text-align: center; animation: pop 0.5s cubic-bezier(0.175,0.885,0.32,1.275); max-width: 360px; width: 90%; }
+  .cel-box h1 { font-size: 34px; color: var(--accent4); margin-bottom: 10px; line-height: 1.2; }
+  .cel-box p  { font-size: 17px; color: var(--text); margin-bottom: 26px; line-height: 1.5; }
+  .cel-box button { background: var(--accent4); border: none; color: #1a1400; font-family: inherit; font-size: 16px; font-weight: 900; padding: 13px 32px; border-radius: 50px; cursor: pointer; transition: opacity 0.2s; }
+  .cel-box button:hover { opacity: 0.85; }
+  @keyframes pop      { from { transform: scale(0.5); opacity:0; } to { transform: scale(1); opacity:1; } }
+  @keyframes bounce   { from { transform: translateY(0); } to { transform: translateY(-5px); } }
+  @keyframes shake    { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+  @keyframes pulse-ok { 0%{transform:scale(1)} 50%{transform:scale(1.03)} 100%{transform:scale(1)} }
 </style>
 </head>
 <body>
 
-<!-- 언어 선택 오버레이 -->
 <div class="lang-screen show" id="lang-screen">
-  <h2>🌤️ 단어 퀴즈</h2>
-  <p>학습할 언어를 선택하세요</p>
+  <h2>🌍 언어를 선택하세요</h2>
+  <p>한국어 단어를 어느 언어로 학습할까요?</p>
   <div class="lang-grid">
-    <button class="pick-btn" onclick="pickLang('en')"><span class="flag">🇺🇸</span> English</button>
-    <button class="pick-btn" onclick="pickLang('zh')"><span class="flag">🇨🇳</span> 中文</button>
-    <button class="pick-btn" onclick="pickLang('vi')"><span class="flag">🇻🇳</span> Tiếng Việt</button>
-    <button class="pick-btn" onclick="pickLang('mn')"><span class="flag">🇲🇳</span> Монгол</button>
+    <button class="pick-btn" onclick="pickLang('en')"><span class="flag">🇺🇸</span> English (영어)</button>
+    <button class="pick-btn" onclick="pickLang('zh')"><span class="flag">🇨🇳</span> 中文 (중국어)</button>
+    <button class="pick-btn" onclick="pickLang('vi')"><span class="flag">🇻🇳</span> Tiếng Việt (베트남어)</button>
+    <button class="pick-btn" onclick="pickLang('mn')"><span class="flag">🇲🇳</span> Монгол (몽골어)</button>
+    <button class="pick-btn" onclick="pickLang('ru')"><span class="flag">🇷🇺</span> Русский (러시아어)</button>
   </div>
 </div>
 
-<!-- 마일스톤 오버레이 -->
-<div class="cel-overlay" id="cel-overlay">
-  <div class="cel-box">
-    <div class="cel-emoji">🎉</div>
-    <div class="cel-title" id="cel-title"></div>
-    <div class="cel-msg"   id="cel-msg"></div>
-    <button class="cel-btn" onclick="closeCelebration()">계속하기 →</button>
-  </div>
-</div>
-
-<!-- 헤더 -->
 <div class="header">
-  <h1>🌤️ 4A 4-1 날씨와 기후</h1>
-  <p>4A 4-1 날씨와 기후 · 학습 언어를 골라 퀴즈를 시작하세요</p>
+  <h1>🧠 한국어 단어 퀴즈</h1>
+  <p>4A 4과 기후와 문화 · 학습 언어를 골라 퀴즈를 시작하세요</p>
   <div class="lang-tabs">
     <button class="lang-tab" id="tab-en" onclick="switchLang('en')"><span class="flag">🇺🇸</span> EN</button>
     <button class="lang-tab" id="tab-zh" onclick="switchLang('zh')"><span class="flag">🇨🇳</span> 中文</button>
-    <button class="lang-tab" id="tab-vi" onclick="switchLang('vi')"><span class="flag">🇻🇳</span> VI</button>
-    <button class="lang-tab" id="tab-mn" onclick="switchLang('mn')"><span class="flag">🇲🇳</span> МН</button>
+    <button class="lang-tab" id="tab-vi" onclick="switchLang('vi')"><span class="flag">🇻🇳</span> Việt</button>
+    <button class="lang-tab" id="tab-mn" onclick="switchLang('mn')"><span class="flag">🇲🇳</span> Монгол</button>
+    <button class="lang-tab" id="tab-ru" onclick="switchLang('ru')"><span class="flag">🇷🇺</span> РУ</button>
   </div>
 </div>
 
-<!-- 퀴즈 카드 -->
-<div class="quiz-card" id="quiz-card" style="display:none;">
+<div class="quiz-card" id="quiz-card" style="display:none">
   <div class="stats">
     <div class="stat-box"><div class="lbl">점수</div><div class="val" id="score-val">0</div></div>
-    <div class="stat-box"><div class="lbl">콤보</div><div class="val" id="combo-val">0</div></div>
-    <div class="stat-box"><div class="lbl">연속오답</div><div class="val" id="wrong-val">0</div></div>
+    <div class="stat-box"><div class="lbl">연속 정답 🔥</div><div class="val" id="combo-val">0</div></div>
+    <div class="stat-box"><div class="lbl">연속 오답 💀</div><div class="val" id="wrong-val">0</div></div>
   </div>
-
   <div class="round-row" id="round-row">
-    <span class="round-lbl" id="round-lbl">라운드 1</span>
-    <div class="rbar"><div class="rbar-fill" id="rbar-fill" style="width:0%"></div></div>
-    <span class="round-cnt" id="round-cnt">0/0</span>
+    <span id="round-lbl">라운드 1</span>
+    <div class="rbar-wrap"><div class="rbar-fill" id="rbar-fill"></div></div>
+    <span id="round-cnt">0/0</span>
   </div>
-
-  <div class="timer-bar"><div class="timer-fill" id="timer-fill"></div></div>
-
-  <div class="q-direction" id="q-direction"></div>
-  <div class="q-word" id="q-word">—</div>
+  <div class="timer-wrap"><div class="timer-fill" id="timer-fill"></div></div>
+  <div class="q-area">
+    <div>
+      <div class="q-direction" id="q-direction"></div>
+      <div class="q-word" id="q-word">—</div>
+    </div>
+  </div>
   <div class="options" id="options"></div>
   <div class="feedback" id="feedback"></div>
 </div>
 
+<div class="cel-overlay" id="cel-overlay">
+  <div class="cel-box">
+    <h1 id="cel-title">🎉</h1>
+    <p  id="cel-msg"></p>
+    <button onclick="closeCelebration()">계속하기 ➔</button>
+  </div>
+</div>
+
 <script>
 let wordData = [];
-let currentLang = 'en';
-let isReverse = false;   // false = KO→외국어, true = 외국어→KO
-let currentQ = null;
-let score = 0, combo = 0, wrongStreak = 0;
-let timerInt = null, timeLeft = 50, penaltyDone = false;
-let isPaused = false;
-let shuffleQueue = [], roundCount = 1;
-let milestones = { 10:false, 30:false, 50:false, 100:false, 200:false, 300:false };
+
+function dataCallback(data) {
+  wordData = data;
+}
 
 const MILESTONE_MSGS = {
-  10:  { title: "🔥 10점 달성!", msg: (p) => `훌륭해요! 계속 이 기세로 가세요!` },
-  30:  { title: "⚡ 30점 돌파!", msg: (p) => `완벽한 흐름이에요. 멈추지 마세요!` },
-  50:  { title: "🌟 50점 달성!", msg: (p) => `대단해요! 절반 목표 달성!` },
-  100: { title: "💯 100점!", msg: (p) => `세 자리 숫자! 진짜 실력자네요!` },
-  200: { title: "🚀 200점!", msg: (p) => `놀라운 집중력이에요!` },
-  300: { title: "👑 300점 전설!", msg: (p) => `완벽한 마스터입니다!` },
+  10:  { title:'🎉 대단해요! 팡파레! 🎉',   msg: pts => `목표 점수 [ ${pts}점 ] 도달!` },
+  30:  { title:'🎉 대단해요! 팡파레! 🎉',   msg: pts => `목표 점수 [ ${pts}점 ] 도달!` },
+  50:  { title:'🎉 대단해요! 팡파레! 🎉',   msg: pts => `목표 점수 [ ${pts}점 ] 도달!` },
+  100: { title:'👑 단어 마스터 등극! 👑',   msg: pts => `꿈의 점수 ${pts}점 돌파! 대단해요!` },
+  200: { title:'💎 단어 고수 등극! 💎',     msg: pts => `놀라운 실력! ${pts}점 돌파! 멈출 수 없죠?` },
+  300: { title:'🏆 전설의 단어왕! 🏆',     msg: pts => `믿을 수 없어요! ${pts}점 달성! 당신은 전설입니다!` }
 };
 
-const LANG_LABELS = { en: 'English', zh: '中文', vi: 'Tiếng Việt', mn: 'Монгол' };
+let currentLang = null;
+let isReverse = false;
+let score = 0, combo = 0, wrongStreak = 0;
+let currentQ = null;
+let timeLeft = 50, timerInt = null, penaltyDone = false;
+let isPaused = false;
+let milestones = {};
+let shuffleQueue = [];
+let roundCount = 0;
 
-function dataCallback(data) { wordData = data; }
+const LANG_LABELS = { en: 'English', zh: '中文', vi: 'Tiếng Việt', mn: 'Монгол', ru: 'Русский' };
 
 function buildQueue(pool) {
-  const q = [...pool];
-  for (let i = q.length - 1; i > 0; i--) {
+  const idx = pool.map((_,i) => i);
+  for (let i = idx.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [q[i], q[j]] = [q[j], q[i]];
+    [idx[i], idx[j]] = [idx[j], idx[i]];
   }
-  return q;
+  return idx;
 }
 
 function popNextWord(pool) {
-  if (shuffleQueue.length === 0) { roundCount++; shuffleQueue = buildQueue(pool); }
-  return shuffleQueue.pop();
+  if (shuffleQueue.length === 0) {
+    roundCount++;
+    shuffleQueue = buildQueue(pool);
+    if (roundCount > 1) showFeedback(`🔄 ${roundCount}번째 라운드 시작! 모든 단어를 다시 섞었습니다.`, 'ok');
+  }
+  return pool[shuffleQueue.shift()];
 }
 
 function updateRoundBar(total) {
@@ -283,7 +283,6 @@ function switchLang(lang) {
 
 function updateTabUI() {
   document.querySelectorAll('.lang-tab').forEach(b => {
-    // badge 제거
     const old = b.querySelector('.reverse-badge');
     if (old) old.remove();
     b.className = 'lang-tab';
@@ -320,16 +319,13 @@ function updateStats() {
 function nextQ() {
   if (isPaused) return;
   clearInterval(timerInt);
-  penaltyDone = false;
-  timeLeft = 50;
+  penaltyDone = false; timeLeft = 50;
   const fb = document.getElementById('feedback');
-  fb.className = 'feedback';
-  fb.textContent = '';
+  fb.className = 'feedback'; fb.textContent = '';
   const pool = wordData.filter(w => w[currentLang]);
   currentQ = popNextWord(pool);
   updateRoundBar(pool.length);
 
-  // 방향 레이블
   const dirEl = document.getElementById('q-direction');
   dirEl.textContent = isReverse
     ? `${LANG_LABELS[currentLang]} → 한국어`
@@ -339,11 +335,11 @@ function nextQ() {
   if (isReverse) {
     document.getElementById('q-word').textContent = currentQ[currentLang];
     correct = currentQ.ko;
-    getOpt = (w) => w.ko;
+    getOpt = w => w.ko;
   } else {
     document.getElementById('q-word').textContent = currentQ.ko;
     correct = currentQ[currentLang];
-    getOpt = (w) => w[currentLang];
+    getOpt = w => w[currentLang];
   }
 
   const opts = [correct];
